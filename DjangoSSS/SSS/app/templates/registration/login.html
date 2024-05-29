@@ -1,0 +1,92 @@
+{% block content %}
+<style>
+    /* Your CSS code here */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #faf9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .topnav {
+        background-color: #faf9f9;
+        overflow: hidden;
+    }
+
+    .topnav a {
+        float: left;
+        display: block;
+        color: #bf1d1d;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .topnav a:hover {
+        background-color: #b11db1;
+        color: black;
+    }
+
+    .topnav a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    /* Add more CSS styles as needed */
+    .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Button hover effect */
+.btn:hover {
+    background-color: #45a049;
+}
+
+/* Add more specific styles for different button types as needed */
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+</style>
+
+
+<div class="topnav">
+    <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+    <a href="{% url 'toys' %}" class="{% if 'toys' in request.path %}active{% endif %}">Toys</a>
+    
+    <a href="{% url 'login' %}" class="{% if 'login' in request.path %}active{% endif %}">Login</a>
+    <a href="{% url 'cart' %}" class="{% if 'cart' in request.path %}active{% endif %}">My Cart</a>
+    
+    <a href="{% url 'checkout' %}" class="{% if 'checkout' in request.path %}active{% endif %}">Checkout</a>
+    <div>
+    <div class="login-form">
+        <h2>Login</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+{% endblock %}
+ you dont have an account?
+  register here <a href="{% url 'register' %}">register</a>

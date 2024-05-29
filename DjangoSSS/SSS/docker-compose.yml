@@ -1,0 +1,7 @@
+version: '3'  # Specifies the version of the Docker Compose file format
+
+services:
+  django:
+    build: .
+    ports:
+      - "8000:8000"

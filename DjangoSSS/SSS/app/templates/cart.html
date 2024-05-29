@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        /* Your CSS code here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .topnav {
+            background-color: #fdf6f6;
+            overflow: hidden;
+        }
+
+        .topnav a {
+            float: left;
+            display: block;
+            color: #9a0c0c;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Add more CSS styles as needed */
+    </style>
+    
+
+
+<div class="topnav">
+    <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+    <a href="{% url 'toys' %}" class="{% if 'toys' in request.path %}active{% endif %}">Toys</a>
+    
+    <a href="{% url 'login' %}" class="{% if 'login' in request.path %}active{% endif %}">Login</a>
+    <a href="{% url 'cart' %}" class="{% if 'cart' in request.path %}active{% endif %}">My Cart</a>
+    
+    <a href="{% url 'checkout' %}" class="{% if 'checkout' in request.path %}active{% endif %}">Checkout</a>
+    <div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div class="cart-items">
+        
+        {% for cart_item in request.user.customer.cart %}
+                <div class="cart-item">
+                <img style="max-width: 200px;" src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}">
+                <h2>{{ cart_item.product.name }}</h2>
+                <p>Price: ${{ cart_item.product.price }}</p>
+                
+                <!-- Display the quantity -->
+                <p>Quantity: {{ cart_item.quantity }}</p>
+                <form action="{% url 'remove_from_cart' cart_item.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Remove from Cart" class="btn btn-danger">
+                </form>
+                
+                <form action="{% url 'update_cart' cart_item.id %}" method="POST">
+                    {% csrf_token %}
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" value="{{ cart_item.quantity }}" min="1">
+                    <input type="submit" value="Update" class="btn btn-primary">
+                </form>
+            </div>
+        {% empty %}
+            <p>Your cart is empty.</p>
+        {% endfor %}
+        <p>Total: ${{ total_cost }}</p>
+        <a href="{%url  'checkout' %}" class="btn">Checkout</a>
+    </div>
+</body>
+</html>

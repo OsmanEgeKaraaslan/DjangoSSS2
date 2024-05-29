@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<style>
+    /* Your CSS code here */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .topnav {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    .topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .topnav a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    /* Add more CSS styles as needed */
+    .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Button hover effect */
+.btn:hover {
+    background-color: #45a049;
+}
+
+/* Add more specific styles for different button types as needed */
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+</style>
+
+
+<div class="topnav">
+    <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+    <a href="{% url 'toys' %}" class="{% if 'toys' in request.path %}active{% endif %}">Toys</a>
+    
+    <a href="{% url 'login' %}" class="{% if 'login' in request.path %}active{% endif %}">Login</a>
+    <a href="{% url 'cart' %}" class="{% if 'cart' in request.path %}active{% endif %}">My Cart</a>
+    
+    <a href="{% url 'checkout' %}" class="{% if 'checkout' in request.path %}active{% endif %}">Checkout</a>
+
+</div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toys</title>
+    
+</head>
+<body>
+    <h1>Toys</h1>
+    <div class="product-container">
+        {% for product in productlist %}
+            {% if product.category == 'toys' %}
+                <div class="product">
+                    <img style="max-width: 200px;"src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <h2>{{ product.name }}</h2>
+                    <p>Price: ${{ product.price }}</p>
+                    <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Add to Cart" class="btn">
+                    </form>
+
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</body>  
+</html>
